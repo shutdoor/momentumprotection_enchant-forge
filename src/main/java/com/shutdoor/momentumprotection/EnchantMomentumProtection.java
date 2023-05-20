@@ -1,13 +1,13 @@
 package com.shutdoor.momentumprotection;
 
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ElytraItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentCategory;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.EnchantmentType;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.ElytraItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -17,8 +17,8 @@ import static com.shutdoor.momentumprotection.MomentumProtection.MODID;
 @Mod.EventBusSubscriber(modid = MODID)
 public class EnchantMomentumProtection extends Enchantment {
     public EnchantMomentumProtection() {
-        super(Rarity.VERY_RARE, EnchantmentCategory.ARMOR_CHEST, new EquipmentSlot[]{
-                EquipmentSlot.CHEST
+        super(Rarity.VERY_RARE, EnchantmentType.ARMOR_CHEST, new EquipmentSlotType[]{
+                EquipmentSlotType.CHEST
         });
     }
 
@@ -43,11 +43,11 @@ public class EnchantMomentumProtection extends Enchantment {
 
     @SubscribeEvent
     public static void onPlayerDamage(LivingDamageEvent damageEvent){
-        if(damageEvent.getEntity() instanceof Player) {
-            Player player = (Player) damageEvent.getEntity();
-            ItemStack chestPlate = player.getItemBySlot(EquipmentSlot.CHEST);
+        if(damageEvent.getEntity() instanceof PlayerEntity) {
+            PlayerEntity player = (PlayerEntity) damageEvent.getEntity();
+            ItemStack chestPlate = player.getItemBySlot(EquipmentSlotType.CHEST);
             if(ElytraItem.isFlyEnabled(chestPlate)) {
-                int enchantLvl = EnchantmentHelper.getTagEnchantmentLevel(EnchantmentReg.MOMENTUM_PROTECTION.get(), chestPlate);
+                int enchantLvl = EnchantmentHelper.getItemEnchantmentLevel(EnchantmentReg.MOMENTUM_PROTECTION.get(), chestPlate);
                 if(enchantLvl > 0) {
                     if (damageEvent.getSource() == DamageSource.FLY_INTO_WALL) {
                         damageEvent.setAmount((damageEvent.getAmount() * (0.95F / enchantLvl)));
