@@ -1,6 +1,8 @@
 package com.shutdoor.momentumprotection;
 
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ElytraItem;
@@ -49,8 +51,12 @@ public class EnchantMomentumProtection extends Enchantment {
             if(ElytraItem.isFlyEnabled(chestPlate)) {
                 int enchantLvl = EnchantmentHelper.getTagEnchantmentLevel(EnchantmentReg.MOMENTUM_PROTECTION.get(), chestPlate);
                 if(enchantLvl > 0) {
-                    if (damageEvent.getSource() == DamageSource.FLY_INTO_WALL) {
+                    if (damageEvent.getSource().equals(DamageTypes.FLY_INTO_WALL)) {
+//                        System.out.println(damageEvent.getSource());
+
+//                        System.out.println(damageEvent.getAmount());
                         damageEvent.setAmount((damageEvent.getAmount() * (0.95F / enchantLvl)));
+//                        System.out.println(damageEvent.getAmount());
                     }
                 }
             }
