@@ -43,11 +43,11 @@ public class EnchantMomentumProtection extends Enchantment {
 
     @SubscribeEvent
     public static void onPlayerDamage(LivingDamageEvent damageEvent){
-        if(damageEvent.getEntityLiving() instanceof Player) {
-            Player player = (Player) damageEvent.getEntityLiving();
+        if(damageEvent.getEntity() instanceof Player) {
+            Player player = (Player) damageEvent.getEntity();
             ItemStack chestPlate = player.getItemBySlot(EquipmentSlot.CHEST);
             if(ElytraItem.isFlyEnabled(chestPlate)) {
-                int enchantLvl = EnchantmentHelper.getItemEnchantmentLevel(MomentumProtection.momentumprotection, chestPlate);
+                int enchantLvl = EnchantmentHelper.getTagEnchantmentLevel(EnchantmentReg.MOMENTUM_PROTECTION.get(), chestPlate);
                 if(enchantLvl > 0) {
                     if (damageEvent.getSource() == DamageSource.FLY_INTO_WALL) {
                         damageEvent.setAmount((damageEvent.getAmount() * (0.95F / enchantLvl)));
